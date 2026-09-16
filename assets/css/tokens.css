@@ -88,6 +88,7 @@
   --z-header: 100;
   --z-overlay: 200;
   --z-intro: 300;
+  --z-grain: 400;
 }
 
 /* Dunkle Abschnitte (Hero, Footer, Intro) sind eine gezielte Gestaltungs-
