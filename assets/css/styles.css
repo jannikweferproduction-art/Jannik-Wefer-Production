@@ -107,17 +107,6 @@ small, .meta { font-size: var(--fs-100); }
   max-width: 42rem;
   margin-bottom: var(--space-6);
 }
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: var(--fs-100);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent-text-on-light);
-}
-.on-dark .eyebrow { color: var(--color-accent); }
 
 .grid {
   display: grid;
@@ -342,18 +331,6 @@ small, .meta { font-size: var(--fs-100); }
   gap: var(--space-3);
   margin-top: var(--space-5);
 }
-.trust-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
-  margin-top: var(--space-7);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--color-border-dark);
-  font-size: var(--fs-200);
-  color: var(--color-text-on-dark-muted);
-}
-.trust-bar strong { color: var(--color-text-on-dark); font-family: var(--font-display); }
-
 /* ---- Karten ---------------------------------------------------------------*/
 .card {
   background: var(--color-bg);
@@ -460,8 +437,19 @@ small, .meta { font-size: var(--fs-100); }
 }
 
 .testimonial {
-  border-left: 3px solid var(--color-accent-dark);
-  padding-left: var(--space-4);
+  position: relative;
+  padding-top: var(--space-6);
+}
+.testimonial::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.75rem;
+  left: 0;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-silver);
 }
 .testimonial p { font-size: var(--fs-400); font-family: var(--font-display); font-weight: 500; }
 .testimonial cite { display: block; margin-top: var(--space-3); font-style: normal; color: var(--color-text-muted); font-size: var(--fs-200); }
@@ -649,7 +637,6 @@ small, .meta { font-size: var(--fs-100); }
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg-alt);
 }
-.page-hero .eyebrow { margin-bottom: var(--space-2); }
 .breadcrumbs {
   display: flex; gap: var(--space-2); flex-wrap: wrap;
   font-size: var(--fs-100); color: var(--color-text-muted);

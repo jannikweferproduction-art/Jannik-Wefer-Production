@@ -18,7 +18,7 @@
      der helle Ton direkt als Text verwendet werden. */
   --color-accent: #c8a24a;
   --color-accent-dark: #a2802e;
-  --color-accent-text-on-light: #8a6a1f;
+  --color-accent-text-on-light: #765a1a;
 
   /* ---- Semantische Farben ------------------------------------------------ */
   --color-bg: var(--color-white);
@@ -38,8 +38,8 @@
   --color-danger: #b3261e;
 
   /* ---- Typografie -------------------------------------------------------- */
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --fs-100: 0.8125rem;   /* 13px – Meta/Labels */
   --fs-200: 0.9375rem;   /* 15px – klein */
