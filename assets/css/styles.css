@@ -170,6 +170,15 @@ small, .meta { font-size: var(--fs-100); }
   background: var(--color-accent);
   color: var(--color-black);
 }
+/* Sanfter, dauerhafter Puls auf dem Haupt-CTA im Hero – lenkt den Blick
+   zur wichtigsten Handlung, auch ohne dass jemand die Maus bewegt. */
+.hero .btn--accent {
+  animation: cta-pulse 3.4s ease-out infinite;
+}
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,162,74,0.4); }
+  60% { box-shadow: 0 0 0 12px rgba(200,162,74,0); }
+}
 .btn--dark {
   background: var(--color-black);
   color: var(--color-white);
@@ -221,7 +230,14 @@ small, .meta { font-size: var(--fs-100); }
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
-.brand__mark { width: 2.25rem; height: 2.25rem; flex-shrink: 0; }
+.brand__mark {
+  width: 2.25rem; height: 2.25rem; flex-shrink: 0;
+  animation: mark-float 4.5s ease-in-out infinite;
+}
+@keyframes mark-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
 .brand__name em { font-style: normal; color: var(--color-text-muted); font-weight: 500; }
 
 .nav-toggle {
@@ -343,13 +359,23 @@ small, .meta { font-size: var(--fs-100); }
   padding-block: var(--space-8) var(--space-7);
   overflow: clip;
 }
+/* Kontinuierlich wanderndes Lichtband – macht den Hero-Bereich auch ohne
+   Mausbewegung sichtbar "lebendig", statt nur beim Hover zu reagieren. */
 .hero::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: -60%; left: -70%;
+  width: 240%; height: 220%;
   background:
-    linear-gradient(115deg, transparent 40%, rgba(200,162,74,0.14) 55%, transparent 70%);
+    linear-gradient(115deg, transparent 42%, rgba(200,162,74,0.22) 50%, transparent 58%);
   pointer-events: none;
+  animation: sheen-sweep 9s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes sheen-sweep {
+  0%, 18% { transform: translate3d(-14%, -8%, 0); }
+  55% { transform: translate3d(14%, 8%, 0); }
+  100% { transform: translate3d(-14%, -8%, 0); }
 }
 .hero__inner { position: relative; max-width: 46rem; }
 .hero h1 { margin-block: var(--space-3); }
@@ -391,12 +417,12 @@ small, .meta { font-size: var(--fs-100); }
 }
 .hero::before, .intro::before {
   filter: blur(4px);
-  animation: scene-drift 26s ease-in-out infinite alternate;
+  animation: scene-drift 16s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes scene-drift {
   0% { transform: translate3d(0,0,0) scale(1); }
-  100% { transform: translate3d(-1.5%, 1.5%, 0) scale(1.06); }
+  100% { transform: translate3d(-4%, 4%, 0) scale(1.1); }
 }
 
 /* Grobkörniger Filmlook über der gesamten Seite: fixiert und nicht
@@ -751,6 +777,13 @@ body::after {
   html { scroll-behavior: auto; }
   .intro { display: none !important; }
   .intro__path { animation: none; }
+  /* Dauerschleifen müssen explizit abgeschaltet werden: eine nahe-Null
+     Dauer lässt eine "infinite"-Animation nur extrem schnell weiterlaufen,
+     statt sie einzufrieren. */
+  .hero::before, .hero::after, .intro::before,
+  .hero .btn--accent, .brand__mark {
+    animation: none !important;
+  }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
 
