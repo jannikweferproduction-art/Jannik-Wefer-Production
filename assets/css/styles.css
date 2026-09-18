@@ -39,7 +39,6 @@ body {
   .btn--dark:hover { background: var(--color-ink); }
   .btn--ghost:hover { background: rgba(11,11,12,0.06); }
   .on-dark .btn--ghost:hover { background: rgba(255,255,255,0.1); }
-  .card--service:hover { border-color: var(--color-graphite); }
   .site-nav a:not(.nav-cta):hover::after { right: 0; }
   .footer-grid a:hover { color: var(--color-accent); }
   .intro__skip:hover { color: var(--color-text-on-dark); border-color: var(--color-silver); }
@@ -48,8 +47,21 @@ body {
      Ohne echtes Hover (Touch) bleibt die Karte flach. */
   .card--service {
     transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(var(--tilt-lift, 0px));
-    transition: transform 320ms var(--ease-out), border-color var(--dur-base) var(--ease-standard);
+    transition: transform 320ms var(--ease-out), border-color var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard);
   }
+  /* Deutlich sichtbares Vergrößern beim Überfahren – die Karte hebt sich
+     spürbar aus dem Raster, statt sich nur minimal zu neigen. Spezifität
+     bewusst über den Typ-Selektor "a" angehoben: ".reveal.is-visible"
+     setzt ebenfalls "transform" mit gleicher Klassen-Spezifität – ohne den
+     Zusatz würde je nach Regel-Reihenfolge im Stylesheet zufällig die
+     Scroll-Reveal-Regel gewinnen und den Hover-Effekt stumm überschreiben. */
+  a.card--service:hover {
+    border-color: var(--color-graphite);
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(calc(var(--tilt-lift, 0px) - 6px)) scale(1.06);
+    box-shadow: var(--shadow-lg);
+    z-index: 2;
+  }
+  a.card--service:hover .arrow { transform: translateX(4px); }
 
   /* Magnetischer Zug auf den primären CTAs */
   .btn--accent, .btn--dark {
@@ -377,7 +389,14 @@ small, .meta { font-size: var(--fs-100); }
   55% { transform: translate3d(14%, 8%, 0); }
   100% { transform: translate3d(-14%, -8%, 0); }
 }
-.hero__inner { position: relative; max-width: 46rem; }
+.hero__inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+.hero__text { max-width: 46rem; }
+.hero__highlight { color: var(--color-accent); }
 .hero h1 { margin-block: var(--space-3); }
 .hero .lead { color: var(--color-text-on-dark-muted); }
 .hero__actions {
@@ -385,6 +404,108 @@ small, .meta { font-size: var(--fs-100); }
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-5);
+}
+
+/* Showreel-Rahmen: ehrlicher Platzhalter für die künftige Video-Kachel –
+   nutzt das Marken-Chevron statt erfundener Foto-/Videoinhalte, deutlich
+   als "in Vorbereitung" gekennzeichnet. Nur ab Desktop sichtbar, damit auf
+   Mobile Überschrift und CTA ohne Umweg erreichbar bleiben. */
+.hero__visual { display: none; }
+@media (min-width: 60rem) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--space-8);
+  }
+  .hero__visual { display: block; }
+}
+.showreel-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-width: 26rem;
+  margin-inline: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-dark);
+  background: linear-gradient(155deg, var(--color-ink) 0%, var(--color-black) 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  isolation: isolate;
+}
+.showreel-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 40%, rgba(200,162,74,0.18) 50%, transparent 60%);
+  animation: sheen-sweep 7s ease-in-out infinite;
+  will-change: transform;
+}
+.showreel-frame__chevron {
+  position: absolute;
+  width: 70%;
+  height: auto;
+  opacity: 0.14;
+  color: var(--color-silver);
+}
+.showreel-frame__chevron path { stroke: currentColor; }
+.showreel-frame__play {
+  position: relative;
+  z-index: 1;
+  width: 4.5rem;
+  height: 4.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+}
+.showreel-frame__label {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-100);
+  letter-spacing: 0.02em;
+  color: var(--color-text-on-dark-muted);
+  text-align: center;
+  padding-inline: var(--space-4);
+}
+
+/* ---- Trust-Strip: kompakte Fakten-Leiste direkt unter dem Hero ----------- */
+.trust-strip {
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--space-5);
+}
+.trust-strip__inner {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+  text-align: center;
+}
+@media (min-width: 48rem) {
+  .trust-strip__inner { grid-template-columns: repeat(4, 1fr); }
+  .trust-strip__item:not(:first-child) {
+    border-left: 1px solid var(--color-border);
+    padding-left: var(--space-4);
+  }
+}
+.trust-strip__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.trust-strip__item strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-500);
+  color: var(--color-black);
+}
+.trust-strip__item span {
+  font-size: var(--fs-100);
+  color: var(--color-text-muted);
 }
 
 /* ---- Cinematic Scene: wiederkehrende Bildsprache auf dunklen Flächen ------
@@ -453,15 +574,31 @@ body::after {
   text-decoration: none;
   color: inherit;
   transition: border-color var(--dur-base) var(--ease-standard),
-              transform var(--dur-base) var(--ease-standard);
+              transform var(--dur-base) var(--ease-standard),
+              box-shadow var(--dur-base) var(--ease-standard);
 }
+/* Tastatur-Fokus erhält dieselbe deutliche Vergrößerung wie der Maus-Hover,
+   unabhängig vom Hover-Feature-Gate (siehe oben), damit die Karte für alle
+   Eingabearten spürbar reagiert. */
+a.card--service:focus-visible {
+  border-color: var(--color-graphite);
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(calc(var(--tilt-lift, 0px) - 6px)) scale(1.06);
+  box-shadow: var(--shadow-lg);
+  z-index: 2;
+}
+a.card--service:focus-visible .arrow { transform: translateX(4px); }
 .card--service .num {
   font-family: var(--font-display);
   color: var(--color-silver);
   font-size: var(--fs-500);
 }
 .card--service h3 { margin-top: var(--space-1); }
-.card--service .arrow { margin-top: auto; font-family: var(--font-display); }
+.card--service .arrow {
+  margin-top: auto;
+  font-family: var(--font-display);
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease-standard);
+}
 
 .usp-list { display: grid; gap: var(--space-4); }
 @media (min-width: 40rem) { .usp-list { grid-template-columns: repeat(2, 1fr); } }
@@ -722,7 +859,12 @@ body::after {
               visibility var(--dur-slow);
 }
 .intro[hidden] { display: none; }
-.intro.is-leaving { opacity: 0; visibility: hidden; }
+/* "pointer-events" ist keine der übergangenen Eigenschaften (siehe
+   .intro { transition: ... }) und greift daher sofort – nötig, weil ein
+   "visibility"-Übergang den berechneten Wert laut Spezifikation erst am
+   Ende der Transition umschaltet und die Fläche sonst bis zu var(--dur-slow)
+   lang weiterhin Klicks/Hover auf darunterliegende Inhalte abfängt. */
+.intro.is-leaving { opacity: 0; visibility: hidden; pointer-events: none; }
 .intro.is-leaving .intro__chevron,
 .intro.is-leaving .intro__glow {
   transform: scale(1.1);
@@ -781,7 +923,7 @@ body::after {
      Dauer lässt eine "infinite"-Animation nur extrem schnell weiterlaufen,
      statt sie einzufrieren. */
   .hero::before, .hero::after, .intro::before,
-  .hero .btn--accent, .brand__mark {
+  .hero .btn--accent, .brand__mark, .showreel-frame::before {
     animation: none !important;
   }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }

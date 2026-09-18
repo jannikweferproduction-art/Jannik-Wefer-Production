@@ -197,6 +197,7 @@
       }
 
       var name = form.querySelector("#name").value.trim();
+      var company = form.querySelector("#company") ? form.querySelector("#company").value.trim() : "";
       var email = form.querySelector("#email").value.trim();
       var phone = form.querySelector("#phone") ? form.querySelector("#phone").value.trim() : "";
       var message = form.querySelector("#message").value.trim();
@@ -204,6 +205,7 @@
       var subject = "Anfrage über die Website von " + name;
       var body =
         "Name: " + name + "\n" +
+        (company ? "Firma: " + company + "\n" : "") +
         "E-Mail: " + email + "\n" +
         (phone ? "Telefon: " + phone + "\n" : "") +
         "\nNachricht:\n" + message;
